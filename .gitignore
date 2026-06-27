@@ -1,0 +1,23 @@
+# python
+__pycache__/
+*.pyc
+venv/
+.venv/
+*.db
+
+# env files
+.env
+.env.local
+
+# uploaded claim files (don't want test uploads in git)
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# node / next.js
+node_modules/
+.next/
+out/
+npm-debug.log*
+
+# os junk
+.DS_Store
