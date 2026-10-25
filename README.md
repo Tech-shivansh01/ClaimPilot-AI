@@ -23,7 +23,7 @@ This was built as a personal/college project, not a production system — see th
 - **LLM:** OpenAI GPT-4o / GPT-4o-mini
 - **Vector DB:** Weaviate (for the duplicate-claim similarity check)
 - **Fraud model:** scikit-learn IsolationForest
-- **Deployment:** Docker, deployable on AWS EC2
+- **Deployment:** Docker 
 
 ## What's real vs. simplified
 
