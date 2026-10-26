@@ -9,7 +9,7 @@ This was built as a personal/college project, not a production system — see th
 1. You file a claim with your policy number, incident details, and upload accident photos + supporting docs (FIR, medical report, repair estimate)
 2. The backend runs the claim through 5 agents, one after another:
    - **Vision agent** — looks at the accident photos, estimates damage severity + affected parts + repair cost (GPT-4o Vision)
-   - **Document agent** — OCRs the uploaded documents and pulls out structured fields like policy number, vehicle number, amounts (OCR + LLM)
+   - **Document agent** — Vision the uploaded documents and pulls out structured fields like policy number, vehicle number, amounts (Vision + LLM)
    - **Fraud agent** — checks for tampered images, location mismatches, duplicate claims, and runs an anomaly detection model over the claim's features
    - **Settlement agent** — calculates the payout based on policy coverage, deductible, and the fraud risk
    - **Compliance agent** — writes a plain-English explanation for why the claim was approved/rejected/sent for review
