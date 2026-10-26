@@ -9,7 +9,7 @@ This was built as a personal/college project, not a production system — see th
 1. You file a claim with your policy number, incident details, and upload accident photos + supporting docs (FIR, medical report, repair estimate)
 2. The backend runs the claim through 5 agents, one after another:
    - **Vision agent** — looks at the accident photos, estimates damage severity + affected parts + repair cost (GPT-4o Vision)
-   - **Document agent** — OCRs the uploaded documents and pulls out structured fields like policy number, vehicle number, amounts (Tesseract OCR + LLM)
+   - **Document agent** — OCRs the uploaded documents and pulls out structured fields like policy number, vehicle number, amounts (OCR + LLM)
    - **Fraud agent** — checks for tampered images, location mismatches, duplicate claims, and runs an anomaly detection model over the claim's features
    - **Settlement agent** — calculates the payout based on policy coverage, deductible, and the fraud risk
    - **Compliance agent** — writes a plain-English explanation for why the claim was approved/rejected/sent for review
@@ -18,12 +18,10 @@ This was built as a personal/college project, not a production system — see th
 ## Tech stack
 
 - **Frontend:** Next.js (App Router, plain JS, no TypeScript)
-- **Backend:** FastAPI + SQLAlchemy + SQLite
+- **Backend:** FastAPI + PostgreSQL
 - **Agent orchestration:** LangGraph
 - **LLM:** OpenAI GPT-4o / GPT-4o-mini
-- **Vector DB:** Weaviate (for the duplicate-claim similarity check)
-- **Fraud model:** scikit-learn IsolationForest
-- **Deployment:** Docker 
+- **Vector DB:** Pinecone (for the duplicate-claim similarity check)
 
 ## What's real vs. simplified
 
@@ -32,8 +30,8 @@ Being upfront about this since I'd rather explain it myself than have someone as
 | Feature | What the "ideal" version would be | What I actually built |
 |---|---|---|
 | Damage detection | Florence-2 / Grounding DINO / SAM2 segmentation | GPT-4o Vision — needs an API key, not a GPU, way more realistic for a solo project |
-| Document parsing | Docling / LayoutLM / Nougat | Tesseract OCR + LLM extraction |
-| Fraud detection | Graph Neural Network over a claims/policy/garage graph | Rule-based checks (EXIF tamper flag, location mismatch, duplicate-claim vector search) + IsolationForest anomaly scoring. A real GNN needs a labeled historical fraud dataset that doesn't exist here, so I didn't fake it |
+| Document parsing | Docling / LayoutLM / Nougat | LLM extraction |
+| Fraud detection | Graph Neural Network over a claims/policy/garage graph | Rule-based checks (EXIF tamper flag, location mismatch, duplicate-claim vector search) . A real GNN needs a labeled historical fraud dataset that doesn't exist here, so I didn't fake it |
 | Deployment | Kubernetes | Docker + docker-compose, runs fine on a single AWS EC2 instance |
 
 The app also has a **mock mode** — if you don't set an `OPENAI_API_KEY`, every agent still runs and returns placeholder-but-realistic results, so you can demo the whole flow without spending anything on API calls.
